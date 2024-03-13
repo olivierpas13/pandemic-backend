@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 app = FastAPI(title="Pandemic Backend", description="Disease transmition model using ODEs")
 
 
-@app.get("/", response_class=HTMLResponse, tags=["Infected and Susceptible"])
+@app.get("/", response_class=HTMLResponse, tags=["Default"])
 async def calculate_default_data():
     beta = lambda t: 0.0005 if t <=10 else 0.0001
 
@@ -20,7 +20,7 @@ async def calculate_default_data():
     u, t = solver.solve(time_steps)
     return JSONResponse({"time": t.tolist(),"population": u.tolist()})
 
-@app.get("/withconstants", response_class=HTMLResponse, tags=["Infected and Susceptible"])
+@app.get("/withconstants", response_class=HTMLResponse, tags=["Different constants"])
 
 async def calculate_data_with_different_constant_values(nu: float =0.01, beta: float= 0.0003):
 
@@ -32,7 +32,7 @@ async def calculate_data_with_different_constant_values(nu: float =0.01, beta: f
     u, t = solver.solve(time_steps)
     return JSONResponse({"time": t.tolist(),"population": u.tolist()})
 
-@app.get("/initialvalues", response_class=HTMLResponse, tags=["Infected and Susceptible"])
+@app.get("/initialvalues", response_class=HTMLResponse, tags=["Different population"])
 async def calculate_data_with_different_inital_values(susceptible: int= 800, infected: int = 1, recovered: int = 0):
     
     beta = lambda t: 0.0005 if t <=10 else 0.0001
@@ -44,7 +44,7 @@ async def calculate_data_with_different_inital_values(susceptible: int= 800, inf
     u, t = solver.solve(time_steps)
     return JSONResponse({"time": t.tolist(),"population": u.tolist()})
 
-@app.get("/withoutrecovered", response_class=HTMLResponse, tags=["Infected and Susceptible"])
+@app.get("/withoutrecovered", response_class=HTMLResponse, tags=["Different constants"])
 async def calculate_data_without_recovered():
     
     beta = lambda t: 0.0005 if t <=10 else 0.0001
