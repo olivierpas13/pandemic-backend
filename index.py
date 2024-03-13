@@ -5,11 +5,11 @@ from sir import SIR
 import numpy as np
 from fastapi.responses import JSONResponse
 
-app = FastAPI()
+app = FastAPI(title="Pandemic Backend", description="Disease transmition model using ODEs")
 
 
-@app.get("/", response_class=HTMLResponse)
-async def read_items():
+@app.get("/", response_class=HTMLResponse, tags=["Infected and Susceptible"])
+async def calculate_data():
     beta = lambda t: 0.0005 if t <=10 else 0.0001
 
     sir = SIR(0.1, beta, 1500, 1, 0)
@@ -24,4 +24,4 @@ async def read_items():
     # plt.plot(t, u[:, 2], label="Recovered")
     # plt.legend()
     # plt.show()
-    return JSONResponse({"hola": t.tolist(),"adios": u.tolist()})
+    return JSONResponse({"time": t.tolist(),"population": u.tolist()})
