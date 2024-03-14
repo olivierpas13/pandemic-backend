@@ -55,3 +55,28 @@ async def calculate_data_without_recovered():
     time_steps = np.linspace(0, 60, 60)
     u, t = solver.solve(time_steps)
     return JSONResponse({"time": t.tolist(),"population": u.tolist()})
+
+
+@app.get("/diseases/covid", response_class=HTMLResponse, tags=["Different diseases"])
+async def calculate_data_of_covid_19():
+    
+    beta = lambda t: 0.0005 if t <=10 else 0.0001
+    sir = SIR(0.001, beta, 800, 1, 0)
+    solver = ForwardEuler(sir)
+    solver.set_initial_conditions(sir.initial_conditions)
+
+    time_steps = np.linspace(0, 60, 60)
+    u, t = solver.solve(time_steps)
+    return JSONResponse({"time": t.tolist(),"population": u.tolist()})
+
+@app.get("/diseases/spanishflu", response_class=HTMLResponse, tags=["Different diseases"])
+async def calculate_data_of_spanish_flu():
+    
+    beta = lambda t: 0.0005 if t <=10 else 0.0001
+    sir = SIR(0.002, beta, 800, 1, 0)
+    solver = ForwardEuler(sir)
+    solver.set_initial_conditions(sir.initial_conditions)
+
+    time_steps = np.linspace(0, 60, 60)
+    u, t = solver.solve(time_steps)
+    return JSONResponse({"time": t.tolist(),"population": u.tolist()})
